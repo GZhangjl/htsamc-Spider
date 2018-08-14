@@ -6,10 +6,12 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy.pipelines.files import FilesPipeline
+from scrapy.exporters import CsvItemExporter
+from scrapy.exceptions import DropItem
 from os.path import basename,join
 from urllib.parse import urlparse
-import codecs
-from scrapy.exporters import CsvItemExporter
+
+
 
 
 class DateProcessorPipeline(object):
@@ -17,7 +19,7 @@ class DateProcessorPipeline(object):
         if item['is_recent'] == 'Yes':
             return item
         else:
-            return {}
+            raise DropItem
 
 
 class MyFilesPipeline(FilesPipeline):
@@ -39,5 +41,5 @@ class CsvWritePipeline(object):
     def process_item(self, item, spider):
         self.exporter.export_item(item)
         return item
-    def end_write(self,spider):
+    def close_spider(self,spider):
         self.file.close()
