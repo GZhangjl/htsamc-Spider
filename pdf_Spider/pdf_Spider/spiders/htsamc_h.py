@@ -20,15 +20,17 @@ class HtsamcSpider(scrapy.Spider):
     start_urls = ['http://www.htsamc.com/servlet/Article?catalogId=2929&keyword=&length=140&rowOfPage=10']
 
     # 经过试验，西刺代理中的代理ip存在大量不可用现象，当多次请求未果后，爬虫就会退出，所以就不在这块继续耗费时间了，控制爬取速度即可。
-    # custom_settings = {
-    #     'DOWNLOADER_MIDDLEWARES' : {
-    #        'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 1
-    #     }
-    # }
-
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+    custom_settings = {
+        'DOWNLOADER_MIDDLEWARES': {
+            # 'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 1,
+            'pdf_Spider.middlewares.UserAgentDownloaderMiddleware': 1
+        },
+        'SET_UA': 'random'
     }
+
+    # headers = {
+    #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+    # }
 
     def parse(self, response):
         pdf_item = PdfSpiderItem()
@@ -66,8 +68,6 @@ class HtsamcSpider(scrapy.Spider):
         page_num = p_response.css('tr#productMelonmdPageNum td:first-child::text').extract_first()
         # 这里使用正则表达式获取页面数
         page_num = re.match('\D+(\d+)\D+(\d+)\D+', page_num).group(2)
-        all_num = int(page_num)
 
-        for i in range(1, all_num+1):
-            yield FormRequest(url=self.start_urls[0], method='POST', formdata={'pageNumber':str(i), 'rowOfPage':'10'}, \
-                              headers=self.headers, callback=self.parse)
+        for i in range(1, page_num+1):
+            yield FormRequest(url=self.start_urls[0], method='POST', formdata={'pageNumber':str(i), 'rowOfPage':'10'}, callback=self.parse)

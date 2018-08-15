@@ -54,8 +54,10 @@ CONCURRENT_REQUESTS_PER_IP = 16
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 # DOWNLOADER_MIDDLEWARES = {
-#    'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 1,
+#    'pdf_Spider.middlewares.UserAgentDownloaderMiddleware': 1,
 # }
+
+# SET_UA = 'random'
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html

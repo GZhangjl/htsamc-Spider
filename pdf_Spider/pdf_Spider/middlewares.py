@@ -32,6 +32,22 @@ from scrapy import signals
 #         request.meta['proxy'] = proxy
 
 
+# 使用fake-useragent包对头部UA进行了随机伪装
+class UserAgentDownloaderMiddleware:
+
+    def __init__(self, crawler):
+        from fake_useragent import UserAgent
+        self.set_ua = crawler.settings.get('SET_UA','random')
+        self.ua = UserAgent()
+
+    def process_request(self, request, spider):
+        f_ua = getattr(self.ua, self.set_ua)
+        request.headers['User-Agent'] = f_ua
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
 class PdfSpiderSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
