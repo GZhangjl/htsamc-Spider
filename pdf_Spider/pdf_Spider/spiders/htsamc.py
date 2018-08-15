@@ -52,6 +52,7 @@ class HtsamcSpider(scrapy.Spider):
         # 这里模拟浏览器登陆是为了在页面上获得公告的总页数，以此来计算总共有几个公告
         web_drvier.get('http://www.htsamc.com/main/news/productannounce/documentsissued/index.shtml')
         body = web_drvier.page_source
+        web_drvier.close()
         p_response = HtmlResponse(url='htsamc.com', body=body, encoding='utf8')
         page_num = p_response.css('tr#productMelonmdPageNum td:first-child::text').extract_first()
         page_num = re.match('\D+(\d+)\D+(\d+)\D+', page_num).group(2)

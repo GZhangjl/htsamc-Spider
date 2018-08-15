@@ -35,7 +35,7 @@ class MyFilesPipeline(FilesPipeline):
 
 class CsvWritePipeline(object):
     def __init__(self):
-        self.file = open('htsamc_pdf.csv','wb')
+        self.file = open('./htsamc/htsamc_pdf.csv','wb')
         self.exporter = CsvItemExporter(self.file,include_headers_line=True,\
                                         encoding='utf8',fields_to_export=['file_name','create_date','file_url','is_recent'])
     def process_item(self, item, spider):
