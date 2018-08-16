@@ -22,7 +22,7 @@ class HtsamcSpider(scrapy.Spider):
     # 经过试验，西刺代理中的代理ip存在大量不可用现象，当多次请求未果后，爬虫就会退出，所以就不在这块继续耗费时间了，控制爬取速度即可。
     custom_settings = {
         'DOWNLOADER_MIDDLEWARES': {
-            # 'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 1,
+            'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 2,
             'pdf_Spider.middlewares.UserAgentDownloaderMiddleware': 1
         },
         'SET_UA': 'random'
@@ -68,6 +68,7 @@ class HtsamcSpider(scrapy.Spider):
         page_num = p_response.css('tr#productMelonmdPageNum td:first-child::text').extract_first()
         # 这里使用正则表达式获取页面数
         page_num = re.match('\D+(\d+)\D+(\d+)\D+', page_num).group(2)
+        page_num = int(page_num)
 
         for i in range(1, page_num+1):
             yield FormRequest(url=self.start_urls[0], method='POST', formdata={'pageNumber':str(i), 'rowOfPage':'10'}, callback=self.parse)

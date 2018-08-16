@@ -8,28 +8,28 @@
 from scrapy import signals
 
 
-# class ProxyDownloaderMiddleware:
-#
-#     def __init__(self):
-#         import json
-#         with open('./utils/proxy.json', 'r') as f:
-#             self.proxy_dict = json.load(f)
-#
-#     def process_request(self, request, spider):
-#         # Called for each request that goes through the downloader
-#         # middleware.
-#
-#         # Must either:
-#         # - return None: continue processing this request
-#         # - or return a Response object
-#         # - or return a Request object
-#         # - or raise IgnoreRequest: process_exception() methods of
-#         #   installed downloader middleware will be called
-#         import random
-#         total_proxy = self.proxy_dict['total']
-#         n = random.randrange(total_proxy)
-#         proxy = self.proxy_dict['proxy_storage'][str(n)]
-#         request.meta['proxy'] = proxy
+class ProxyDownloaderMiddleware:
+
+    def __init__(self):
+        import json
+        with open('./utils/proxy.json', 'r') as f:
+            self.proxy_dict = json.load(f)
+
+    def process_request(self, request, spider):
+        # Called for each request that goes through the downloader
+        # middleware.
+
+        # Must either:
+        # - return None: continue processing this request
+        # - or return a Response object
+        # - or return a Request object
+        # - or raise IgnoreRequest: process_exception() methods of
+        #   installed downloader middleware will be called
+        import random
+        total_proxy = self.proxy_dict['total']
+        n = random.randrange(total_proxy)
+        proxy = self.proxy_dict['proxy_storage'][str(n)]
+        request.meta['proxy'] = proxy
 
 
 # 使用fake-useragent包对头部UA进行了随机伪装
