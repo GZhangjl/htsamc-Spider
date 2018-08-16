@@ -22,7 +22,7 @@ class HtsamcSpider(scrapy.Spider):
     # 经过试验，西刺代理中的代理ip存在大量不可用现象，当多次请求未果后，爬虫就会退出，所以就不在这块继续耗费时间了，控制爬取速度即可。
     custom_settings = {
         'DOWNLOADER_MIDDLEWARES': {
-            'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 2,
+            # 'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 2,
             'pdf_Spider.middlewares.UserAgentDownloaderMiddleware': 1
         },
         'SET_UA': 'random'
