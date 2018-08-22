@@ -14,7 +14,7 @@
 
 	* `MyFilesPipeline`继承了`Scrapy`默认的`FilesPipeline`类，通过重写`item_completed`与`item_completed`方法修改了保存下载后`PDF`的名字和用于保存的文件夹名字
 
-	* 以上基本达成最初爬虫目的
+* 以上基本达成最初爬虫目的
 
 
 ### 完成改进
