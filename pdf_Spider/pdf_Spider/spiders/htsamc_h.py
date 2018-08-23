@@ -59,7 +59,7 @@ class HtsamcSpider(scrapy.Spider):
     # 页需要事先获取，所以在这里使用selenium模拟浏览器进行请求并获得总页面数。
     def start_requests(self):
         import re
-        web_drvier = Chrome(executable_path=r'C:\Users\zhang\chromedriver_win32\chromedriver.exe')
+        web_drvier = Chrome(executable_path=r'C:\Users\zhang\Desktop\chromedriver_win32(1)\chromedriver.exe')
         # 这里模拟浏览器登陆是为了在页面上获得公告的总页数，以此来计算总共有几个公告
         web_drvier.get('http://www.htsamc.com/main/news/productannounce/documentsissued/index.shtml')
         body = web_drvier.page_source
