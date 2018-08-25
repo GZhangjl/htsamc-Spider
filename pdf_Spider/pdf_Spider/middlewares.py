@@ -12,7 +12,7 @@ from scrapy import signals
 #
 #     def __init__(self):
 #         import json
-#         with open('./utils/proxy.json', 'r') as f:
+#         with open('./utils/proxy.json', 'r') as f: # C:\Users\zhang\Desktop\htsamc-Spider\pdf_Spider\pdf_Spider\utils\proxy.json
 #             self.proxy_dict = json.load(f)
 #
 #     def process_request(self, request, spider):

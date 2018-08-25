@@ -22,7 +22,7 @@ class HtsamcSpider(scrapy.Spider):
     # 经过试验，西刺代理中的代理ip存在大量不可用现象，当多次请求未果后，爬虫就会退出，所以就不在这块继续耗费时间了，控制爬取速度即可。
     custom_settings = {
         'DOWNLOADER_MIDDLEWARES': {
-            # 'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 1,
+            # 'pdf_Spider.middlewares.ProxyDownloaderMiddleware': 2,
             'pdf_Spider.middlewares.UserAgentDownloaderMiddleware': 1
         },
         'SET_UA': 'random'
@@ -59,7 +59,7 @@ class HtsamcSpider(scrapy.Spider):
     # 页需要事先获取，所以在这里使用selenium模拟浏览器进行请求并获得总页面数。
     def start_requests(self):
         import re
-        web_drvier = Chrome(executable_path=r'C:\Users\zhang\chromedriver_win32\chromedriver.exe')
+        web_drvier = Chrome(executable_path=r'C:\Users\zhang\Desktop\chromedriver_win32(1)\chromedriver.exe')
         # 这里模拟浏览器登陆是为了在页面上获得公告的总页数，以此来计算总共有几个公告
         web_drvier.get('http://www.htsamc.com/main/news/productannounce/documentsissued/index.shtml')
         body = web_drvier.page_source
@@ -68,6 +68,7 @@ class HtsamcSpider(scrapy.Spider):
         page_num = p_response.css('tr#productMelonmdPageNum td:first-child::text').extract_first()
         # 这里使用正则表达式获取页面数
         page_num = re.match('\D+(\d+)\D+(\d+)\D+', page_num).group(2)
+        page_num = int(page_num)
 
         for i in range(1, page_num+1):
             yield FormRequest(url=self.start_urls[0], method='POST', formdata={'pageNumber':str(i), 'rowOfPage':'10'}, callback=self.parse)

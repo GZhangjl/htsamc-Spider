@@ -14,12 +14,13 @@ from urllib.parse import urlparse
 
 
 
+
 class DateProcessorPipeline(object):
     def process_item(self, item, spider):
         if item['is_recent'] == 'Yes':
             return item
         else:
-            raise DropItem
+            raise DropItem()
 
 
 class MyFilesPipeline(FilesPipeline):
